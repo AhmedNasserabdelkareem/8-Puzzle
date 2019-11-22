@@ -20,17 +20,15 @@ public class Astar extends Solver {
 
     @Override
     protected Solution solve() {
-
         if (usingEuclidean)
             calculateEuclidean(initialState);
         else
             calculateManhattan(initialState);
         frontier.add(initialState);
-
         long startTime = System.nanoTime();
 
         while (!frontier.isEmpty()) {
-            ++iterations;
+            iterations++;
 
             State state = frontier.poll();
             exploerd.add(state);
@@ -43,17 +41,12 @@ public class Astar extends Solver {
             }
 
             for (State child : state.getChildren()) {
-                if (!child.isInList(frontier) && !child.isInList(exploerd)) {
-                    calculateDistance(child);
-                    frontier.add(child);
-                } else if (child.isInList(frontier)) {
-                    frontier.remove(child);
+                if (child.isInList(frontier) || !child.isInList(exploerd)) {
                     calculateDistance(child);
                     frontier.add(child);
                 }
             }
         }
-
         return null;
     }
 
@@ -65,12 +58,12 @@ public class Astar extends Solver {
     }
 
     private void calculateManhattan(State child) {
-        child.setDistance(Math.abs(child.getEmptyCellI() - goalState.getEmptyCellI())
+        child.setDistance(child.getDepth() + Math.abs(child.getEmptyCellI() - goalState.getEmptyCellI())
                 + Math.abs(child.getEmptyCellJ() - goalState.getEmptyCellJ()));
     }
 
     private void calculateEuclidean(State child) {
-        child.setDistance((int) Math.sqrt(Math.pow(child.getEmptyCellI() - goalState.getEmptyCellI(), 2)
+        child.setDistance(child.getDepth() + (int) Math.sqrt(Math.pow(child.getEmptyCellI() - goalState.getEmptyCellI(), 2)
                 + Math.pow(child.getEmptyCellJ() - goalState.getEmptyCellJ(), 2)));
     }
 }

@@ -60,9 +60,10 @@ public class Solution {
         int lineNum = (int) Math.ceil(path.size() / (double) statesPerLine);
 
         System.out.println("Solution Using ( " + NORMALCELL + method + RESETCOLOR
-                + " ) In ( " + NORMALCELL + (path.size() - 1) + RESETCOLOR + " ) Steps"
+                + " ) In ( " + NORMALCELL + (path.size() - 1) + RESETCOLOR + " ) Steps,"
                 + " Explored ( " + NORMALCELL + iterations + RESETCOLOR + " ) States"
-                + " In ( " + NORMALCELL + time + RESETCOLOR + " ) ms\n");
+                + " In ( " + NORMALCELL + time + RESETCOLOR + " ) ms"
+                + " With search depth ( " + NORMALCELL + leafState.getDepth() + RESETCOLOR + " )\n");
 
         for (int line = 0; line < lineNum; line++) {
             for (int i = 0; i < leafState.getBoard().length; i++) {

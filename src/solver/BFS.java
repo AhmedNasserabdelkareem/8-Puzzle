@@ -20,7 +20,7 @@ public class BFS extends Solver{
         long startTime = System.nanoTime();
 
         while (!frontier.isEmpty()){
-            ++iterations;
+            iterations++;
 
             State state = frontier.poll();
             exploerd.add(state);

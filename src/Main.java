@@ -12,13 +12,13 @@ public class Main {
         Astar astarMan = new Astar(false);
         Astar astarEuc = new Astar(true);
 
-        int [][] initBoard = {{1,2,5}
-                             ,{3,4,0}
-                             ,{6,7,8}};
+//        int [][] initBoard = {{1,2,5}
+//                             ,{3,4,0}
+//                             ,{6,7,8}};
 
-//        int [][] initBoard = {{3,1,2}
-//                             ,{6,0,4}
-//                             ,{7,8,5}};
+        int [][] initBoard = {{3,5,1}
+                             ,{2,0,8}
+                             ,{7,4,6}};
 
         int [][] goalBoard = {{0,1,2}
                              ,{3,4,5}
@@ -34,9 +34,9 @@ public class Main {
             BFSsol.showSolutionInline(statesPerLine, "BFS");
 
         //DFS
-        Solution DFSsol = dfs.getSolutionLeafState(initialState, goalState);
-        if (DFSsol != null)
-            DFSsol.showSolutionInline(statesPerLine, "DFS");
+//        Solution DFSsol = dfs.getSolutionLeafState(initialState, goalState);
+//        if (DFSsol != null)
+//            DFSsol.showSolutionInline(statesPerLine, "DFS");
 
         //A* Manhattan
         Solution manSol = astarMan.getSolutionLeafState(initialState, goalState);

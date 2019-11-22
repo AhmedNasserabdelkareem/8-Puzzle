@@ -5,13 +5,22 @@ import java.util.LinkedList;
 
 public class State implements Comparable<State>{
 
-    private int ROWS, COLOUMNS;
+    private int ROWS, COLUMNS;
 
     private State parent;
     private LinkedList<State> children;
     private int [][] board;
+
+    //indices of the empty cell and which cell is swapped with it
     private int emptyCellI, emptyCellJ, movedCellI, movedCellJ;
+    private int depth;
+
+    //distance to goad state
     private Integer distance;
+
+    public int getDepth() {
+        return depth;
+    }
 
     public int getDistance() {
         return distance;
@@ -41,14 +50,16 @@ public class State implements Comparable<State>{
         this.board = board;
         this.parent = parent;
         ROWS = board.length;
-        COLOUMNS = board[0].length;
+        COLUMNS = board[0].length;
 
         getEmptyCellIndices();
         this.movedCellI = this.emptyCellI;
         this.movedCellJ = this.emptyCellJ;
+
+        depth = 1;
     }
 
-    private State (int[][] board, State parent, int emptyCellI, int emptyCellJ, int movedCellI, int movedCellJ){
+    private State (int[][] board, State parent, int emptyCellI, int emptyCellJ, int movedCellI, int movedCellJ, int depth){
         this.board = board;
         this.parent = parent;
 
@@ -57,8 +68,10 @@ public class State implements Comparable<State>{
         this.movedCellI = movedCellI;
         this.movedCellJ = movedCellJ;
 
+        this.depth = depth;
+
         ROWS = board.length;
-        COLOUMNS = board[0].length;
+        COLUMNS = board[0].length;
     }
 
     public int[][] getBoard(){
@@ -94,7 +107,7 @@ public class State implements Comparable<State>{
         boolean foundEmptyCell = false;
 
         for (int i = 0; i < ROWS && !foundEmptyCell; i++)
-            for (int j = 0; j < COLOUMNS && !foundEmptyCell; j++)
+            for (int j = 0; j < COLUMNS && !foundEmptyCell; j++)
                 if (board[i][j] == 0) {
                     foundEmptyCell = true;
                     this.emptyCellI = i;
@@ -104,12 +117,12 @@ public class State implements Comparable<State>{
     }
 
     private int[][] swapCellWithEmpty (int i2, int j2){
-        if (i2 < 0 || i2 >= ROWS || j2 < 0 || j2 >= COLOUMNS)
+        if (i2 < 0 || i2 >= ROWS || j2 < 0 || j2 >= COLUMNS)
             return null;
 
-        int[][] swapped = new int[ROWS][COLOUMNS];
+        int[][] swapped = new int[ROWS][COLUMNS];
         for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLOUMNS; j++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 if (i == emptyCellI && j == emptyCellJ)
                     swapped[i][j] = this.board[i2][j2];
                 else if (i == i2 && j == j2)
@@ -125,14 +138,14 @@ public class State implements Comparable<State>{
         if (board == null)
             return;
 
-        this.children.addLast(new State(board, this,movedCellI, movedCellJ, emptyCellI, emptyCellJ));
+        this.children.addLast(new State(board, this,movedCellI, movedCellJ, emptyCellI, emptyCellJ, depth + 1));
     }
 
     public void showBoard(){
         System.out.println("Board");
         System.out.println("-----");
         for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLOUMNS; j++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 System.out.printf(this.board[i][j] + " ");
             }
             System.out.println();
@@ -163,7 +176,7 @@ public class State implements Comparable<State>{
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < children.size(); j++) {
-                for (int k = 0; k < COLOUMNS; k++) {
+                for (int k = 0; k < COLUMNS; k++) {
                     System.out.printf(children.get(j).getBoard()[i][k] + " ");
                 }
                 System.out.printf("\t");
@@ -174,11 +187,11 @@ public class State implements Comparable<State>{
     }
 
     public boolean isEqualTo(int[][] state){
-        if (state.length != ROWS || state[0].length != COLOUMNS)
+        if (state.length != ROWS || state[0].length != COLUMNS)
             return false;
 
         for (int i = 0; i < ROWS; i++)
-            for (int j = 0; j < COLOUMNS; j++)
+            for (int j = 0; j < COLUMNS; j++)
                 if (this.board[i][j] != state[i][j])
                     return false;
 
