@@ -18,6 +18,12 @@ public class State implements Comparable<State>{
     //distance to goad state
     private Integer distance;
 
+    public int getParity() {
+        return parity;
+    }
+
+    private int parity;
+
     public int getDepth() {
         return depth;
     }
@@ -51,11 +57,10 @@ public class State implements Comparable<State>{
         this.parent = parent;
         ROWS = board.length;
         COLUMNS = board[0].length;
-
         getEmptyCellIndices();
         this.movedCellI = this.emptyCellI;
         this.movedCellJ = this.emptyCellJ;
-
+        parity = getInvCount(board)%2;
         depth = 1;
     }
 
@@ -210,5 +215,15 @@ public class State implements Comparable<State>{
     @Override
     public int compareTo(State o) {
         return this.distance.compareTo(o.distance);
+    }
+
+    private int getInvCount(int[][] arr) {
+        int inv_count = 0;
+        for (int i = 0; i < COLUMNS - 1; i++)
+            for (int j = i + 1; j < COLUMNS; j++)
+                if (arr[j][i] > 0 && arr[j][i] > 0 && arr[j][i] > arr[i][j]) {
+                    inv_count++;
+                }
+        return inv_count;
     }
 }

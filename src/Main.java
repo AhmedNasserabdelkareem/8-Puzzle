@@ -16,37 +16,42 @@ public class Main {
 //                             ,{3,4,0}
 //                             ,{6,7,8}};
 
-        int [][] initBoard = {{3,5,1}
-                             ,{2,0,8}
-                             ,{7,4,6}};
+        int [][] initBoard = {{0,1,2}
+                             ,{3,7,5}
+                             ,{6,4,8}};
 
         int [][] goalBoard = {{0,1,2}
                              ,{3,4,5}
                              ,{6,7,8}};
 
+        int [][] NotSolvableState = {{8,1,2},{0,4,3},{7,6,5}};
+
 
         State initialState = new State(initBoard, null);
         State goalState = new State(goalBoard, null);
 
-        //BFS
-        Solution BFSsol = bfs.getSolutionLeafState(initialState, goalState);
-        if (BFSsol != null)
-            BFSsol.showSolutionInline(statesPerLine, "BFS");
+        if(initialState.getParity()==goalState.getParity()){
+            //A* Manhattan
+            Solution manSol = astarMan.getSolutionLeafState(initialState, goalState);
+            if (manSol != null)
+                manSol.showSolutionInline(statesPerLine, "A* Manhattan Distance");
 
-        //DFS
-//        Solution DFSsol = dfs.getSolutionLeafState(initialState, goalState);
-//        if (DFSsol != null)
-//            DFSsol.showSolutionInline(statesPerLine, "DFS");
+            //A* Euclidean
+            Solution eucSol = astarEuc.getSolutionLeafState(initialState, goalState);
+            if (eucSol != null)
+                eucSol.showSolutionInline(statesPerLine, "A* Euclidean Distance");
+            //BFS
+            Solution BFSsol = bfs.getSolutionLeafState(initialState, goalState);
+            if (BFSsol != null)
+                BFSsol.showSolutionInline(statesPerLine, "BFS");
 
-        //A* Manhattan
-        Solution manSol = astarMan.getSolutionLeafState(initialState, goalState);
-        if (manSol != null)
-            manSol.showSolutionInline(statesPerLine, "A* Manhattan Distance");
+            //DFS
+            Solution DFSsol = dfs.getSolutionLeafState(initialState, goalState);
+            if (DFSsol != null)
+                DFSsol.showSolutionInline(statesPerLine, "DFS");
 
-        //A* Euclidean
-        Solution eucSol = astarEuc.getSolutionLeafState(initialState, goalState);
-        if (eucSol != null)
-            eucSol.showSolutionInline(statesPerLine, "A* Euclidean Distance");
-
+        }else{
+            System.out.println("This initial state has no solution");
+        }
     }
 }
